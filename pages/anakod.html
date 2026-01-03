@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <title>Anakod | Prototip</title>
+</head>
+<body>
+  <site-header></site-header>
+
+  <div class="layout">
+    <site-nav></site-nav>
+
+    <main class="content">
+      <h1>Anakod</h1>
+
+      <section class="card">
+        <h2>Kayıt</h2>
+
+        <div class="grid">
+          <div class="field">
+            <label>ANAKOD (Kaydet sonrası oluşur)</label>
+            <input id="anakodOut" type="text" readonly placeholder="Kaydet deyince üretilecek" />
+          </div>
+
+          <div class="field">
+            <label>Buluntu Yeri</label>
+            <select id="buluntuYeri" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>PlanKare</label>
+            <input id="planKare" type="text" placeholder="örn: A12 / G-14 / 10x10-3" />
+          </div>
+
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>Açıklama</label>
+            <textarea id="aciklama" class="textarea" rows="4" placeholder="Kısa açıklama..."></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="btnSave" class="button">Kaydet ve Kod Ver</button>
+          <button id="btnClear" class="button secondary">Formu Temizle</button>
+          <span id="msg" class="msg"></span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Son Kayıtlar</h2>
+        <div class="row">
+          <button id="btnExport" class="button secondary">JSON Dışa Aktar</button>
+          <button id="btnResetDemo" class="button secondary danger">Demo Sıfırla (Tüm Kayıtlar)</button>
+          <span class="muted">Not: Sıfırlama demo içindir; gerçek kullanımda kapatılır.</span>
+        </div>
+
+        <div id="list" class="table"></div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/js/components/site-header.js"></script>
+  <script type="module" src="/js/components/site-nav.js"></script>
+  <script type="module" src="/js/pages/anakodPage.js"></script>
+</body>
+</html>
