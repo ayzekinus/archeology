@@ -49,13 +49,12 @@ function renderList() {
   const rows = listRecords();
 
   const header = `
-    <div class="tr">
+    <div class="tr" style="grid-template-columns: 90px 160px 160px 120px 120px 1fr 220px 170px;">
       <div class="td">ANAKOD</div>
       <div class="td">Buluntu Yeri</div>
       <div class="td">PlanKare</div>
       <div class="td">Tabaka</div>
       <div class="td">Seviye</div>
-      <div class="td">Mezar No</div>
       <div class="td">Açıklama</div>
       <div class="td">GIS</div>
       <div class="td">Tarih</div>
@@ -63,13 +62,12 @@ function renderList() {
   `;
 
   const body = rows.map(r => `
-    <div class="tr">
+    <div class="tr" style="grid-template-columns: 90px 160px 160px 120px 120px 1fr 220px 170px;">
       <div class="td code">${escapeHtml(r.anakod)}</div>
       <div class="td">${escapeHtml(r.buluntuYeri)}</div>
       <div class="td">${escapeHtml(r.planKare)}</div>
       <div class="td">${escapeHtml(r.tabaka)}</div>
       <div class="td">${escapeHtml(r.seviye)}</div>
-      <div class="td">${escapeHtml(r.mezarNo)}</div>
       <div class="td">${escapeHtml(r.aciklama)}</div>
       <div class="td">${escapeHtml(truncate(r.gis, 120))}</div>
       <div class="td">${escapeHtml(formatDate(r.createdAt))}</div>
@@ -124,7 +122,6 @@ btnSave.addEventListener("click", () => {
     setMsg(`Kayıt oluşturuldu. Anakod: ${rec.anakod}`);
     renderList();
 
-    // Yeni kayıt için form otomatik temizlensin, ANAKOD alanı temizlenmesin.
     clearForm({ keepCode: true, keepMsg: true });
     buluntuYeri.focus();
   } catch (e) {

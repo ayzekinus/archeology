@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="/archeology/assets/styles.css" />
-  <title>Anakod Prototip</title>
+  <title>Archeology | Prototip</title>
 </head>
 <body>
   <site-header></site-header>
@@ -13,13 +13,30 @@
     <site-nav></site-nav>
 
     <main class="content">
-      <h1>Anakod Prototip</h1>
-      <p>AAA → ZZZ sıra ile, tekrar edilemez anakod üretimi.</p>
+      <h1>Arkeoloji Prototip</h1>
+      <p class="muted">Anakod ve Buluntu modülleri (GitHub Pages /archeology altında çalışır).</p>
 
-      <div class="card">
-        <h2>Anakod Oluştur</h2>
-        <p class="muted">Kayıt sonrası sistem otomatik kod verir.</p>
-        <a class="button" href="/archeology/pages/anakod.html">Anakod Sayfası</a>
+      <div class="grid">
+        <div class="card">
+          <h2>Anakod</h2>
+          <p class="muted">AAA → ZZZ sıra ile, tekrar edilemez anakod üretimi.</p>
+          <a class="button" href="/archeology/pages/anakod.html">Anakod</a>
+        </div>
+
+        <div class="card">
+          <h2>Buluntu</h2>
+          <p class="muted">Anakod ile ilişkili buluntu kaydı oluşturma ve listeleme.</p>
+          <div class="row">
+            <a class="button" href="/archeology/pages/buluntu-create.html">Buluntu Oluştur</a>
+            <a class="button secondary" href="/archeology/pages/buluntu-list.html">Buluntu Listele</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Envanterlik Eser</h2>
+          <p class="muted">Kazı / Müze envanter numarası olan kayıtları ayrı görünüm.</p>
+          <a class="button secondary" href="/archeology/pages/envanterlik.html">Envanterlik Eser</a>
+        </div>
       </div>
     </main>
   </div>

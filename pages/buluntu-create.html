@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/archeology/assets/styles.css" />
+  <title>Buluntu Oluştur | Prototip</title>
+</head>
+<body>
+  <site-header></site-header>
+  <div class="layout">
+    <site-nav></site-nav>
+
+    <main class="content">
+      <h1>Buluntu Oluştur</h1>
+
+      <section class="card">
+        <h2>Genel Bilgiler</h2>
+
+        <div class="grid">
+          <div class="field">
+            <label>Anakod</label>
+            <select id="anakodSelect" class="select"></select>
+            <div class="muted" id="anakodHint" style="margin-top:6px;"></div>
+          </div>
+
+          <div class="field">
+            <label>Buluntu Numarası</label>
+            <input id="buluntuNo" type="text" placeholder="örn: 0001" />
+            <div class="muted" id="buluntuNoHint" style="margin-top:6px;"></div>
+          </div>
+
+          <div class="field">
+            <label>Buluntu Tarihi</label>
+            <input id="buluntuTarihi" type="date" />
+          </div>
+
+          <div class="field">
+            <label>Kazı Envanter No</label>
+            <input id="kaziEnvanterNo" type="text" />
+          </div>
+
+          <div class="field">
+            <label>Form/Obje</label>
+            <select id="formObje" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Üretim Yeri</label>
+            <select id="uretimYeri" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Tip</label>
+            <select id="tip" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Buluntu Yeri (Anakod’dan)</label>
+            <input id="buluntuYeriLocked" type="text" readonly />
+          </div>
+
+          <div class="field">
+            <label>Plankare</label>
+            <input id="planKare" type="text" />
+          </div>
+
+          <div class="field">
+            <label>Seviye</label>
+            <input id="seviye" type="text" />
+          </div>
+
+          <div class="field">
+            <label>Eser Tarihi</label>
+            <input id="eserTarihi" type="date" />
+          </div>
+
+          <div class="field">
+            <label>Şube</label>
+            <input id="sube" type="text" />
+          </div>
+
+          <div class="field">
+            <label>Müze Envanter No</label>
+            <input id="muzeEnvanterNo" type="text" />
+          </div>
+
+          <div class="field">
+            <label>Yapım Malzemesi</label>
+            <select id="yapimMalzemesi" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Dönem</label>
+            <select id="donem" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Buluntu Şekli</label>
+            <select id="buluntuSekli" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Tabaka</label>
+            <input id="tabaka" type="text" />
+          </div>
+
+          <div class="field">
+            <label>Mezar No</label>
+            <input id="mezarNo" type="text" />
+          </div>
+
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>Buluntu Yeri Diğer Bilgi</label>
+            <input id="buluntuYeriDiger" type="text" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Ölçü ve Renk Bilgileri</h2>
+
+        <div class="grid">
+          <div class="field">
+            <label>Yükseklik</label>
+            <div class="measure">
+              <input id="yukseklikVal" type="number" step="any" placeholder="değer" />
+              <select id="yukseklikUnit" class="select">
+                <option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Ağız Çapı</label>
+            <div class="measure">
+              <input id="agizCapiVal" type="number" step="any" />
+              <select id="agizCapiUnit" class="select">
+                <option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Kaide/Dip Çapı</label>
+            <div class="measure">
+              <input id="dipCapiVal" type="number" step="any" />
+              <select id="dipCapiUnit" class="select">
+                <option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Kalınlık/Cidar</label>
+            <div class="measure">
+              <input id="kalinlikVal" type="number" step="any" />
+              <select id="kalinlikUnit" class="select">
+                <option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Uzunluk</label>
+            <div class="measure">
+              <input id="uzunlukVal" type="number" step="any" />
+              <select id="uzunlukUnit" class="select">
+                <option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Genişlik</label>
+            <div class="measure">
+              <input id="genislikVal" type="number" step="any" />
+              <select id="genislikUnit" class="select">
+                <option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Çap</label>
+            <div class="measure">
+              <input id="capVal" type="number" step="any" />
+              <select id="capUnit" class="select">
+                <option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Ağırlık</label>
+            <div class="measure">
+              <input id="agirlikVal" type="number" step="any" />
+              <select id="agirlikUnit" class="select">
+                <option value="g">g</option><option value="kg">kg</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Hamur Rengi</label>
+            <select id="hamurRengi" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Astar Rengi</label>
+            <select id="astarRengi" class="select"></select>
+            <div class="muted" style="margin-top:6px;">Hamur Rengi ile aynı veri kaynağından gelir.</div>
+          </div>
+
+          <div class="field">
+            <label>Kalıp Yönü</label>
+            <input id="kalipYonu" type="text" />
+          </div>
+
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>Diğer Renk</label>
+            <input id="digerRenk" type="text" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Tanım / Bezeme</h2>
+        <textarea id="tanimBezeme" class="textarea" rows="4"></textarea>
+      </section>
+
+      <section class="card">
+        <h2>Kaynak / Referans</h2>
+        <textarea id="kaynakReferans" class="textarea" rows="3"></textarea>
+      </section>
+
+      <section class="card">
+        <h2>Buluntu Görseli</h2>
+        <input id="buluntuGorsel" type="file" accept="image/*" multiple />
+        <div class="muted" id="gorselHint" style="margin-top:6px;"></div>
+      </section>
+
+      <section class="card">
+        <h2>Buluntu Çizim</h2>
+        <input id="buluntuCizim" type="file" accept="image/*" multiple />
+        <div class="muted" id="cizimHint" style="margin-top:6px;"></div>
+      </section>
+
+      <section class="card">
+        <div class="row">
+          <button id="btnSave" class="button">Kaydet</button>
+          <button id="btnClear" class="button secondary">Formu Temizle</button>
+          <a class="button secondary" href="/archeology/pages/buluntu-list.html">Listeye Git</a>
+          <span id="msg" class="msg"></span>
+        </div>
+        <div class="muted" style="margin-top:8px;">
+          Not: Bu prototip dosyaları localStorage’a base64 olarak kaydetmeye çalışır. Tarayıcı limiti nedeniyle çok büyük fotoğraflarda kaydetmeyebilir.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/archeology/js/components/site-header.js"></script>
+  <script type="module" src="/archeology/js/components/site-nav.js"></script>
+  <script type="module" src="/archeology/js/pages/buluntuCreatePage.js"></script>
+</body>
+</html>

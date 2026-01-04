@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/archeology/assets/styles.css" />
+  <title>Envanterlik Eser | Prototip</title>
+</head>
+<body>
+  <site-header></site-header>
+  <div class="layout">
+    <site-nav></site-nav>
+
+    <main class="content">
+      <h1>Envanterlik Eser</h1>
+      <p class="muted">Kazı Envanter No veya Müze Envanter No dolu olan buluntular listelenir.</p>
+
+      <section class="card">
+        <div class="row">
+          <button id="btnExport" class="button secondary">JSON Dışa Aktar</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div id="list" class="table"></div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/archeology/js/components/site-header.js"></script>
+  <script type="module" src="/archeology/js/components/site-nav.js"></script>
+  <script type="module" src="/archeology/js/pages/envanterlikPage.js"></script>
+</body>
+</html>
