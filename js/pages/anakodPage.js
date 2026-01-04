@@ -4,7 +4,11 @@ import { createAnakodRecord, listRecords, exportAsJSON, resetStoreForDemo } from
 const anakodOut = document.getElementById("anakodOut");
 const buluntuYeri = document.getElementById("buluntuYeri");
 const planKare = document.getElementById("planKare");
+const tabaka = document.getElementById("tabaka");
+const seviye = document.getElementById("seviye");
+const mezarNo = document.getElementById("mezarNo");
 const aciklama = document.getElementById("aciklama");
+const gis = document.getElementById("gis");
 
 const btnSave = document.getElementById("btnSave");
 const btnClear = document.getElementById("btnClear");
@@ -29,12 +33,16 @@ function renderBuluntuYeriOptions() {
   }
 }
 
-function clearForm() {
-  anakodOut.value = "";
+function clearForm({ keepCode = false, keepMsg = false } = {}) {
+  if (!keepCode) anakodOut.value = "";
   buluntuYeri.value = "";
   planKare.value = "";
+  tabaka.value = "";
+  seviye.value = "";
+  mezarNo.value = "";
   aciklama.value = "";
-  setMsg("");
+  gis.value = "";
+  if (!keepMsg) setMsg("");
 }
 
 function renderList() {
@@ -45,7 +53,11 @@ function renderList() {
       <div class="td">ANAKOD</div>
       <div class="td">Buluntu Yeri</div>
       <div class="td">PlanKare</div>
+      <div class="td">Tabaka</div>
+      <div class="td">Seviye</div>
+      <div class="td">Mezar No</div>
       <div class="td">Açıklama</div>
+      <div class="td">GIS</div>
       <div class="td">Tarih</div>
     </div>
   `;
@@ -55,12 +67,21 @@ function renderList() {
       <div class="td code">${escapeHtml(r.anakod)}</div>
       <div class="td">${escapeHtml(r.buluntuYeri)}</div>
       <div class="td">${escapeHtml(r.planKare)}</div>
+      <div class="td">${escapeHtml(r.tabaka)}</div>
+      <div class="td">${escapeHtml(r.seviye)}</div>
+      <div class="td">${escapeHtml(r.mezarNo)}</div>
       <div class="td">${escapeHtml(r.aciklama)}</div>
+      <div class="td">${escapeHtml(truncate(r.gis, 120))}</div>
       <div class="td">${escapeHtml(formatDate(r.createdAt))}</div>
     </div>
   `).join("");
 
   list.innerHTML = header + (body || `<div class="tr"><div class="td" style="grid-column:1/-1;">Kayıt yok.</div></div>`);
+}
+
+function truncate(s, n) {
+  const t = String(s ?? "");
+  return t.length > n ? t.slice(0, n) + "…" : t;
 }
 
 function formatDate(iso) {
@@ -87,7 +108,11 @@ btnSave.addEventListener("click", () => {
   const payload = {
     buluntuYeri: (buluntuYeri.value || "").trim(),
     planKare: (planKare.value || "").trim(),
-    aciklama: (aciklama.value || "").trim()
+    tabaka: (tabaka.value || "").trim(),
+    seviye: (seviye.value || "").trim(),
+    mezarNo: (mezarNo.value || "").trim(),
+    aciklama: (aciklama.value || "").trim(),
+    gis: (gis.value || "").trim()
   };
 
   if (!payload.buluntuYeri) return setMsg("Buluntu Yeri seçiniz.", true);
@@ -98,6 +123,10 @@ btnSave.addEventListener("click", () => {
     anakodOut.value = rec.anakod;
     setMsg(`Kayıt oluşturuldu. Anakod: ${rec.anakod}`);
     renderList();
+
+    // Yeni kayıt için form otomatik temizlensin, ANAKOD alanı temizlenmesin.
+    clearForm({ keepCode: true, keepMsg: true });
+    buluntuYeri.focus();
   } catch (e) {
     setMsg(e.message || "Kayıt oluşturulamadı.", true);
   }

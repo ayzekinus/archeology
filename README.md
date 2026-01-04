@@ -1,6 +1,5 @@
-# Archeology (GitHub Pages)
+# Archeology | Anakod (v2)
 
-Bu repo GitHub Pages üzerinden şu adreste yayınlanır:
-- https://ayzekinus.github.io/archeology/
-
-> Bu pakette linkler GitHub Pages Project Pages için `/archeology` ile sabitlenmiştir.
+- Base path: /archeology
+- Yeni alanlar: Tabaka, Seviye, Mezar No, GIS
+- Kaydet sonrası form otomatik temizlenir (ANAKOD alanı temizlenmez).

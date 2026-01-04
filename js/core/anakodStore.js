@@ -36,7 +36,11 @@ export function createAnakodRecord(payload) {
     anakod: code,
     buluntuYeri: payload.buluntuYeri,
     planKare: payload.planKare,
+    tabaka: payload.tabaka || "",
+    seviye: payload.seviye || "",
+    mezarNo: payload.mezarNo || "",
     aciklama: payload.aciklama || "",
+    gis: payload.gis || "",
     createdAt: new Date().toISOString()
   };
 

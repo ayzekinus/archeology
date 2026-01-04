@@ -34,9 +34,32 @@
             <input id="planKare" type="text" placeholder="örn: A12 / G-14 / 10x10-3" />
           </div>
 
+          <div class="field">
+            <label>Tabaka</label>
+            <input id="tabaka" type="text" placeholder="örn: T1 / Layer 3" />
+          </div>
+
+          <div class="field">
+            <label>Seviye</label>
+            <input id="seviye" type="text" placeholder="örn: 1 / 2 / 3 veya -0.35m" />
+          </div>
+
+          <div class="field">
+            <label>Mezar No</label>
+            <input id="mezarNo" type="text" placeholder="örn: M12 / GR-05" />
+          </div>
+
           <div class="field" style="grid-column: 1 / -1;">
             <label>Açıklama</label>
-            <textarea id="aciklama" class="textarea" rows="4" placeholder="Kısa açıklama..."></textarea>
+            <textarea id="aciklama" class="textarea" rows="3" placeholder="Kısa açıklama..."></textarea>
+          </div>
+
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>GIS</label>
+            <textarea id="gis" class="textarea" rows="4" placeholder="GIS sisteminden GeoJSON veya WKT (POLYGON(...)) formatında yapıştırabilirsiniz."></textarea>
+            <div class="muted" style="margin-top:6px;">
+              Not: Bu prototip GIS verisini metin olarak saklar. Sonraki aşamada PostGIS’e geometry olarak aktaracağız.
+            </div>
           </div>
         </div>
 
