@@ -49,7 +49,7 @@ function renderList() {
   const rows = listRecords();
 
   const header = `
-    <div class="tr" style="grid-template-columns: 90px 160px 160px 120px 120px 1fr 220px 170px;">
+    <div class="tr" style="grid-template-columns: 90px 160px 160px 120px 120px 1fr 220px 170px; min-width: 1250px;">
       <div class="td">ANAKOD</div>
       <div class="td">Buluntu Yeri</div>
       <div class="td">PlanKare</div>
@@ -62,7 +62,7 @@ function renderList() {
   `;
 
   const body = rows.map(r => `
-    <div class="tr" style="grid-template-columns: 90px 160px 160px 120px 120px 1fr 220px 170px;">
+    <div class="tr" style="grid-template-columns: 90px 160px 160px 120px 120px 1fr 220px 170px; min-width: 1250px;">
       <div class="td code">${escapeHtml(r.anakod)}</div>
       <div class="td">${escapeHtml(r.buluntuYeri)}</div>
       <div class="td">${escapeHtml(r.planKare)}</div>

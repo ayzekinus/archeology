@@ -28,15 +28,28 @@ a { color: inherit; }
 .button { padding:10px 12px; border-radius: 10px; border:1px solid #111; background:#111; color:#fff; cursor:pointer; text-decoration:none; display:inline-block; }
 .button.secondary { background:#fff; color:#111; border-color:#ddd; }
 .button.danger { border-color:#b00; color:#b00; background:#fff; }
+.button.small { padding:7px 10px; border-radius: 10px; font-size: 13px; }
 .button:hover { opacity: .92; }
 
 .msg { margin-left: 6px; color:#0b6; font-weight:600; }
 .msg.error { color:#b00; }
 
-/* Table: allow horizontal scroll when many columns */
+/* Table */
 .table { margin-top: 10px; border:1px solid #e6e6e6; border-radius: 12px; overflow-x:auto; background:#fff; }
-.table .tr { display:grid; gap:0; border-top:1px solid #eee; min-width: 1400px; }
+.table .tr { display:grid; gap:0; border-top:1px solid #eee; min-width: 1100px; }
 .table .tr:first-child { border-top:0; background:#fafafa; font-weight:700; }
 .table .td { padding:10px; border-right:1px solid #f0f0f0; overflow:hidden; text-overflow: ellipsis; white-space: nowrap; }
 .table .td:last-child { border-right:0; }
 .code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+/* Modal */
+.modal-backdrop { position:fixed; inset:0; background: rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; padding: 18px; z-index: 50; }
+.modal { width:min(980px, 100%); background:#fff; border-radius: 16px; border:1px solid #e6e6e6; overflow:hidden; box-shadow: 0 10px 35px rgba(0,0,0,.25); }
+.modal-header { display:flex; justify-content:space-between; align-items:center; padding: 12px 14px; background:#fafafa; border-bottom:1px solid #eee; }
+.modal-title { font-weight: 800; }
+.modal-body { padding: 14px; max-height: 70vh; overflow:auto; }
+.kv { display:grid; grid-template-columns: 220px 1fr; gap: 8px 12px; }
+.kv .k { color:#555; }
+.kv .v { font-weight: 600; }
+.thumbRow { display:flex; gap:10px; flex-wrap: wrap; margin-top:10px; }
+.thumb { width: 120px; height: 120px; object-fit: cover; border-radius: 12px; border:1px solid #eee; background:#f6f7f9; }

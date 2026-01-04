@@ -28,7 +28,7 @@ function render() {
   );
 
   const header = `
-    <div class="tr" style="grid-template-columns: 140px 90px 160px 160px 140px 140px 120px;">
+    <div class="tr" style="grid-template-columns: 140px 90px 160px 160px 140px 140px 120px; min-width: 980px;">
       <div class="td">Buluntu No</div>
       <div class="td">Anakod</div>
       <div class="td">Kazı Env.</div>
@@ -40,7 +40,7 @@ function render() {
   `;
 
   const body = rows.map(r => `
-    <div class="tr" style="grid-template-columns: 140px 90px 160px 160px 140px 140px 120px;">
+    <div class="tr" style="grid-template-columns: 140px 90px 160px 160px 140px 140px 120px; min-width: 980px;">
       <div class="td code">${escapeHtml(r.fullBuluntuNo)}</div>
       <div class="td code">${escapeHtml(r.anakod)}</div>
       <div class="td">${escapeHtml(r.kaziEnvanterNo)}</div>

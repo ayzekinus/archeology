@@ -16,20 +16,63 @@
 
       <section class="card">
         <h2>Filtre</h2>
-        <div class="row">
-          <div class="field" style="min-width:260px;">
+
+        <div class="grid">
+          <div class="field">
             <label>Anakod</label>
-            <select id="filterAnakod" class="select"></select>
-          </div>
-          <div class="field" style="min-width:260px;">
-            <label>Arama</label>
-            <input id="filterQ" type="text" placeholder="Buluntu no, tip, dönem, plankare..." />
+            <select id="fAnakod" class="select"></select>
           </div>
 
-          <div class="row" style="margin-top:22px;">
-            <button id="btnExport" class="button secondary">JSON Dışa Aktar</button>
-            <button id="btnResetDemo" class="button secondary danger">Demo Sıfırla (Buluntu)</button>
+          <div class="field">
+            <label>Buluntu No (AAA0001)</label>
+            <input id="fBuluntuNo" type="text" placeholder="örn: AAA0001 veya 0001" />
           </div>
+
+          <div class="field">
+            <label>Buluntu Yeri</label>
+            <select id="fBuluntuYeri" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Yapım Malzemesi</label>
+            <select id="fYapim" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Buluntu Tarihi (Başlangıç)</label>
+            <input id="fTarihFrom" type="date" />
+          </div>
+
+          <div class="field">
+            <label>Buluntu Tarihi (Bitiş)</label>
+            <input id="fTarihTo" type="date" />
+          </div>
+
+          <div class="field">
+            <label>Dönem</label>
+            <select id="fDonem" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Form/Obje</label>
+            <select id="fForm" class="select"></select>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="btnClearFilters" class="button secondary">Filtreleri Temizle</button>
+          <button id="btnResetDemo" class="button secondary danger">Demo Sıfırla (Buluntu)</button>
+          <span class="muted">Not: Export, filtre sonucundaki kayıtların tüm detaylarını dışa aktarır.</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Dışa Aktar</h2>
+        <div class="row">
+          <button id="btnCsv" class="button secondary">CSV</button>
+          <button id="btnExcel" class="button secondary">EXCEL</button>
+          <button id="btnPdf" class="button secondary">PDF</button>
+          <span id="msg" class="msg"></span>
         </div>
       </section>
 
@@ -37,6 +80,21 @@
         <div id="list" class="table"></div>
       </section>
     </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Buluntu Detay</div>
+        <div class="row" style="margin-top:0;">
+          <button id="btnModalEdit" class="button secondary small">Düzenle</button>
+          <button id="btnModalDelete" class="button danger small">Sil</button>
+          <button id="btnModalClose" class="button secondary small">Kapat</button>
+        </div>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
   </div>
 
   <script type="module" src="/archeology/js/components/site-header.js"></script>

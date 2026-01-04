@@ -5,7 +5,10 @@ import {
 } from "../core/config.js";
 
 import { listRecords as listAnakodRecords } from "../core/anakodStore.js";
-import { createBuluntuRecord, existsBuluntuNo } from "../core/buluntuStore.js";
+import { createBuluntuRecord, updateBuluntuRecord, existsBuluntuNo, getBuluntuById } from "../core/buluntuStore.js";
+
+const pageTitle = document.getElementById("pageTitle");
+const editHint = document.getElementById("editHint");
 
 const anakodSelect = document.getElementById("anakodSelect");
 const anakodHint = document.getElementById("anakodHint");
@@ -68,7 +71,9 @@ const btnClear = document.getElementById("btnClear");
 const msg = document.getElementById("msg");
 
 const MAX_IMAGE_COUNT = 6;
-const MAX_IMAGE_SIZE_BYTES = 800_000; // ~0.8MB each
+const MAX_IMAGE_SIZE_BYTES = 800_000; // ~0.8MB
+
+let editId = null;
 
 function setMsg(text, isError = false) {
   msg.textContent = text || "";
@@ -100,17 +105,13 @@ function fillAnakodOptions() {
     o.textContent = `${r.anakod} — ${r.buluntuYeri}`;
     o.dataset.anakod = r.anakod;
     o.dataset.buluntuYeri = r.buluntuYeri || "";
-    o.dataset.planKare = r.planKare || "";
-    o.dataset.seviye = r.seviye || "";
-    o.dataset.tabaka = r.tabaka || "";
-    o.dataset.mezarNo = r.mezarNo || "";
     anakodSelect.appendChild(o);
   }
 
   if (anakodRecords.length === 0) {
     anakodHint.textContent = "Henüz anakod kaydı yok. Önce Anakod sayfasından kayıt oluşturun.";
   } else {
-    anakodHint.textContent = "Anakod seçtiğinizde Buluntu Yeri otomatik gelir ve değiştirilemez.";
+    anakodHint.textContent = "Anakod seçtiğinizde sadece Buluntu Yeri otomatik gelir (diğer alanlar gelmez).";
   }
 }
 
@@ -120,11 +121,7 @@ function getSelectedAnakodMeta() {
   return {
     anakodId: opt.value,
     anakod: opt.dataset.anakod,
-    buluntuYeri: opt.dataset.buluntuYeri || "",
-    planKare: opt.dataset.planKare || "",
-    seviye: opt.dataset.seviye || "",
-    tabaka: opt.dataset.tabaka || "",
-    mezarNo: opt.dataset.mezarNo || ""
+    buluntuYeri: opt.dataset.buluntuYeri || ""
   };
 }
 
@@ -149,7 +146,8 @@ function validateUniqHint() {
     buluntuNoHint.style.color = "#555";
     return;
   }
-  if (existsBuluntuNo(full)) {
+  const exists = existsBuluntuNo(full, editId);
+  if (exists) {
     buluntuNoHint.textContent = `UYARI: Bu numara zaten var: ${full}`;
     buluntuNoHint.style.color = "#b00";
   } else {
@@ -160,20 +158,14 @@ function validateUniqHint() {
 
 anakodSelect.addEventListener("change", () => {
   const meta = getSelectedAnakodMeta();
+  // İstenen: sadece Buluntu Yeri gelsin. PlanKare/Tabaka/Seviye/Mezar No otomatik dolmaz.
   buluntuYeriLocked.value = meta?.buluntuYeri || "";
-
-  // kullanıcı henüz dokunmadıysa anakod'dan doldur
-  if (!planKare.value) planKare.value = meta?.planKare || "";
-  if (!seviye.value) seviye.value = meta?.seviye || "";
-  if (!tabaka.value) tabaka.value = meta?.tabaka || "";
-  if (!mezarNo.value) mezarNo.value = meta?.mezarNo || "";
-
   validateUniqHint();
 });
 
 buluntuNo.addEventListener("input", () => validateUniqHint());
 
-function clearForm({ keepAnakod = true } = {}) {
+function clearForm({ keepAnakod = true, keepMsg = false } = {}) {
   if (!keepAnakod) anakodSelect.value = "";
   buluntuNo.value = "";
   buluntuTarihi.value = "";
@@ -208,7 +200,7 @@ function clearForm({ keepAnakod = true } = {}) {
   gorselHint.textContent = "";
   cizimHint.textContent = "";
 
-  setMsg("");
+  if (!keepMsg) setMsg("");
   validateUniqHint();
 }
 
@@ -244,8 +236,69 @@ buluntuCizim.addEventListener("change", () => {
   cizimHint.textContent = count ? `${count} dosya seçildi.` : "";
 });
 
+function getQueryEditId() {
+  try {
+    const url = new URL(window.location.href);
+    return url.searchParams.get("id");
+  } catch {
+    return null;
+  }
+}
+
+function applyEditMode(rec) {
+  if (!rec) return;
+  editId = rec.id;
+  pageTitle.textContent = "Buluntu Düzenle";
+  editHint.textContent = `Düzenleme modu: ${rec.fullBuluntuNo}`;
+  btnSave.textContent = "Güncelle";
+
+  if (rec.anakodId) anakodSelect.value = rec.anakodId;
+
+  const meta = getSelectedAnakodMeta();
+  buluntuYeriLocked.value = meta?.buluntuYeri || rec.buluntuYeri || "";
+  buluntuNo.value = rec.buluntuNoRaw || rec.fullBuluntuNo?.slice(3) || "";
+
+  buluntuTarihi.value = rec.buluntuTarihi || "";
+  kaziEnvanterNo.value = rec.kaziEnvanterNo || "";
+  formObje.value = rec.formObje || "";
+  uretimYeri.value = rec.uretimYeri || "";
+  tip.value = rec.tip || "";
+
+  planKare.value = rec.planKare || "";
+  seviye.value = rec.seviye || "";
+  eserTarihi.value = rec.eserTarihi || "";
+  sube.value = rec.sube || "";
+  muzeEnvanterNo.value = rec.muzeEnvanterNo || "";
+  yapimMalzemesi.value = rec.yapimMalzemesi || "";
+  donem.value = rec.donem || "";
+  buluntuSekli.value = rec.buluntuSekli || "";
+  tabaka.value = rec.tabaka || "";
+  mezarNo.value = rec.mezarNo || "";
+  buluntuYeriDiger.value = rec.buluntuYeriDiger || "";
+
+  const o = rec.olcuRenk || {};
+  if (o.yukseklik) { yukseklikVal.value = o.yukseklik.value || ""; yukseklikUnit.value = o.yukseklik.unit || "mm"; }
+  if (o.agizCapi) { agizCapiVal.value = o.agizCapi.value || ""; agizCapiUnit.value = o.agizCapi.unit || "mm"; }
+  if (o.dipCapi) { dipCapiVal.value = o.dipCapi.value || ""; dipCapiUnit.value = o.dipCapi.unit || "mm"; }
+  if (o.kalinlik) { kalinlikVal.value = o.kalinlik.value || ""; kalinlikUnit.value = o.kalinlik.unit || "mm"; }
+  if (o.uzunluk) { uzunlukVal.value = o.uzunluk.value || ""; uzunlukUnit.value = o.uzunluk.unit || "mm"; }
+  if (o.genislik) { genislikVal.value = o.genislik.value || ""; genislikUnit.value = o.genislik.unit || "mm"; }
+  if (o.cap) { capVal.value = o.cap.value || ""; capUnit.value = o.cap.unit || "mm"; }
+  if (o.agirlik) { agirlikVal.value = o.agirlik.value || ""; agirlikUnit.value = o.agirlik.unit || "g"; }
+  hamurRengi.value = o.hamurRengi || "";
+  astarRengi.value = o.astarRengi || "";
+
+  kalipYonu.value = rec.kalipYonu || "";
+  digerRenk.value = rec.digerRenk || "";
+  tanimBezeme.value = rec.tanimBezeme || "";
+  kaynakReferans.value = rec.kaynakReferans || "";
+
+  validateUniqHint();
+}
+
 btnSave.addEventListener("click", async () => {
   setMsg("");
+
   const meta = getSelectedAnakodMeta();
   if (!meta) return setMsg("Anakod seçiniz.", true);
 
@@ -253,14 +306,17 @@ btnSave.addEventListener("click", async () => {
   if (!numPad) return setMsg("Buluntu Numarası boş olamaz (örn: 0001).", true);
 
   const fullNo = `${meta.anakod}${numPad}`;
-  if (existsBuluntuNo(fullNo)) return setMsg(`Bu buluntu numarası zaten mevcut: ${fullNo}`, true);
+  if (existsBuluntuNo(fullNo, editId)) return setMsg(`Bu buluntu numarası zaten mevcut: ${fullNo}`, true);
 
   try {
     btnSave.disabled = true;
-    btnSave.textContent = "Kaydediliyor...";
+    btnSave.textContent = editId ? "Güncelleniyor..." : "Kaydediliyor...";
 
-    const gorselArr = await filesToDataUrls(buluntuGorsel.files, "Buluntu Görseli");
-    const cizimArr = await filesToDataUrls(buluntuCizim.files, "Buluntu Çizim");
+    const newGorsel = await filesToDataUrls(buluntuGorsel.files, "Buluntu Görseli");
+    const newCizim = await filesToDataUrls(buluntuCizim.files, "Buluntu Çizim");
+
+    let existing = null;
+    if (editId) existing = getBuluntuById(editId);
 
     const payload = {
       anakod: meta.anakod,
@@ -277,7 +333,7 @@ btnSave.addEventListener("click", async () => {
 
       planKare: (planKare.value || "").trim(),
       seviye: (seviye.value || "").trim(),
-      eserTarihi: eserTarihi.value || "",
+      eserTarihi: (eserTarihi.value || "").trim(),
       sube: (sube.value || "").trim(),
       muzeEnvanterNo: (muzeEnvanterNo.value || "").trim(),
       yapimMalzemesi: (yapimMalzemesi.value || "").trim(),
@@ -304,21 +360,25 @@ btnSave.addEventListener("click", async () => {
       tanimBezeme: (tanimBezeme.value || "").trim(),
       kaynakReferans: (kaynakReferans.value || "").trim(),
 
-      gorsel: gorselArr,
-      cizim: cizimArr
+      gorsel: (newGorsel.length ? newGorsel : (existing?.gorsel || [])),
+      cizim: (newCizim.length ? newCizim : (existing?.cizim || []))
     };
 
-    const rec = createBuluntuRecord(payload);
-    setMsg(`Buluntu kaydedildi: ${rec.fullBuluntuNo}`);
-
-    // Yeni kayıt için form temizlensin; Anakod kalsın
-    clearForm({ keepAnakod: true });
-    buluntuNo.focus();
+    let rec;
+    if (editId) {
+      rec = updateBuluntuRecord(editId, payload);
+      setMsg(`${rec.fullBuluntuNo} buluntu numarası başarı ile güncellendi.`);
+    } else {
+      rec = createBuluntuRecord(payload);
+      setMsg(`${rec.fullBuluntuNo} buluntu numarası başarı ile kayıt edildi.`);
+      clearForm({ keepAnakod: true, keepMsg: true });
+      buluntuNo.focus();
+    }
   } catch (e) {
-    setMsg(e.message || "Kaydedilemedi.", true);
+    setMsg(e.message || "İşlem başarısız oldu.", true);
   } finally {
     btnSave.disabled = false;
-    btnSave.textContent = "Kaydet";
+    btnSave.textContent = editId ? "Güncelle" : "Kaydet";
   }
 });
 
@@ -333,3 +393,10 @@ fillOptions(astarRengi, RENK_OPTIONS);
 
 fillAnakodOptions();
 validateUniqHint();
+
+const qid = getQueryEditId();
+if (qid) {
+  const rec = getBuluntuById(qid);
+  if (rec) applyEditMode(rec);
+  else setMsg("Düzenlenecek kayıt bulunamadı.", true);
+}

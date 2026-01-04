@@ -12,7 +12,8 @@
     <site-nav></site-nav>
 
     <main class="content">
-      <h1>Buluntu Oluştur</h1>
+      <h1 id="pageTitle">Buluntu Oluştur</h1>
+      <p class="muted" id="editHint"></p>
 
       <section class="card">
         <h2>Genel Bilgiler</h2>
@@ -72,7 +73,7 @@
 
           <div class="field">
             <label>Eser Tarihi</label>
-            <input id="eserTarihi" type="date" />
+            <input id="eserTarihi" type="text" placeholder="örn: MÖ 2. yy / MS 5-6. yy / 1200-1250" />
           </div>
 
           <div class="field">
@@ -254,7 +255,7 @@
           <span id="msg" class="msg"></span>
         </div>
         <div class="muted" style="margin-top:8px;">
-          Not: Bu prototip dosyaları localStorage’a base64 olarak kaydetmeye çalışır. Tarayıcı limiti nedeniyle çok büyük fotoğraflarda kaydetmeyebilir.
+          Not: Prototipte fotoğraflar localStorage’a base64 olarak kaydedilir. Büyük dosyalar tarayıcı limitine takılabilir.
         </div>
       </section>
     </main>
