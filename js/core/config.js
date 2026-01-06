@@ -58,3 +58,60 @@ export const RENK_OPTIONS = [
   { value: "GRI", label: "Gri" },
   { value: "SIYAH", label: "Siyah" }
 ];
+
+// v5 - Django Artifact model hizalama (prototip sabit listeler)
+
+// ArtifactForm (Form Türü) - prototip sabit seçenekler
+export const ARTIFACT_FORM_OPTIONS = [
+  { value: "", label: "Seçiniz..." },
+  { value: "GENEL", label: "Genel" },
+  { value: "SIKKE", label: "Sikke" },
+  { value: "SERAMIK", label: "Seramik" },
+  { value: "MEZAR", label: "Mezar" }
+];
+
+// Production Site (Üretim Yeri) - Django production_site
+export const PRODUCTION_SITE_OPTIONS = [
+  { value: "", label: "Seçiniz..." },
+  { value: "YEREL", label: "Yerel" },
+  { value: "BOLGESEL", label: "Bölgesel" },
+  { value: "ITHAL", label: "İthal" },
+  { value: "BILINMIYOR", label: "Bilinmiyor" }
+];
+
+// Process Type - örnek (Django PROCESS_TYPE)
+export const PROCESS_TYPE_OPTIONS = [
+  { value: "", label: "Seçiniz..." },
+  { value: "KAZI", label: "Kazı" },
+  { value: "ETUT", label: "Etüt" },
+  { value: "KONSERVASYON", label: "Konservasyon" },
+  { value: "ENVANTER", label: "Envanter" }
+];
+
+export const SURFACE_QUALITY_OPTIONS = [
+  { value: "", label: "Seçiniz..." },
+  { value: "0", label: "Pürtüklü" },
+  { value: "1", label: "Tozsu" },
+  { value: "2", label: "Kaygan" }
+];
+
+export const BAKING_OPTIONS = [
+  { value: "", label: "Seçiniz..." },
+  { value: "0", label: "İyi" },
+  { value: "1", label: "Orta" },
+  { value: "2", label: "Kötü" }
+];
+
+export const TEXTURE_OPTIONS = [
+  { value: "", label: "Seçiniz..." },
+  { value: "0", label: "Sert" },
+  { value: "1", label: "Orta" },
+  { value: "2", label: "Yumuşak" }
+];
+
+export const DENSITY_OPTIONS = [
+  { value: "", label: "Seçiniz..." },
+  { value: "0", label: "Az" },
+  { value: "1", label: "Orta" },
+  { value: "2", label: "Çok" }
+];

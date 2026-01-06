@@ -1,129 +1,121 @@
-import { getJSON, setJSON, removeKey } from "./storage.js";
+const KEY = "arkeoloji_buluntu_records_v5";
 
-const KEY = "ark_buluntu_store_v1";
-
-function emptyStore() {
-  return { records: [] };
+function nowISO() {
+  return new Date().toISOString();
 }
 
-export function loadStore() {
-  return getJSON(KEY, emptyStore());
+function loadAll() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
 }
 
-function saveStore(store) {
-  setJSON(KEY, store);
+function saveAll(arr) {
+  localStorage.setItem(KEY, JSON.stringify(arr));
 }
 
-export function resetBuluntuForDemo() {
-  removeKey(KEY);
+export function listBuluntuRecords() {
+  const arr = loadAll();
+  return arr.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
 }
 
-function makeId() {
-  return "id-" + crypto.getRandomValues(new Uint32Array(4)).join("-");
+export function getBuluntuById(id) {
+  return loadAll().find(x => x.id === id) || null;
 }
 
 export function existsBuluntuNo(fullBuluntuNo, excludeId = null) {
-  const store = loadStore();
-  const key = String(fullBuluntuNo || "").trim().toUpperCase();
-  if (!key) return false;
-  return (store.records || []).some(r =>
-    String(r.fullBuluntuNo).toUpperCase() === key &&
-    (!excludeId || r.id !== excludeId)
-  );
+  const target = String(fullBuluntuNo || "").toUpperCase();
+  if (!target) return false;
+  return loadAll().some(r => String(r.fullBuluntuNo || "").toUpperCase() === target && r.id !== excludeId);
+}
+
+function normalizeRecord(payload, prev = null) {
+  const base = prev || {};
+  return {
+    id: base.id || crypto.randomUUID(),
+    createdAt: base.createdAt || nowISO(),
+    updatedAt: nowISO(),
+
+    anakod: payload.anakod ?? base.anakod ?? "",
+    anakodId: payload.anakodId ?? base.anakodId ?? "",
+    fullBuluntuNo: payload.fullBuluntuNo ?? base.fullBuluntuNo ?? "",
+    buluntuNoRaw: payload.buluntuNoRaw ?? base.buluntuNoRaw ?? "",
+
+    buluntuTarihi: payload.buluntuTarihi ?? base.buluntuTarihi ?? "",
+    formType: payload.formType ?? base.formType ?? "GENEL",
+
+    isActive: payload.isActive ?? base.isActive ?? true,
+    isInventory: payload.isInventory ?? base.isInventory ?? false,
+
+    processType: payload.processType ?? base.processType ?? "",
+    productionSite: payload.productionSite ?? base.productionSite ?? "",
+    findingShape: payload.findingShape ?? base.findingShape ?? "",
+
+    // prototype & general
+    kaziEnvanterNo: payload.kaziEnvanterNo ?? base.kaziEnvanterNo ?? "",
+    muzeEnvanterNo: payload.muzeEnvanterNo ?? base.muzeEnvanterNo ?? "",
+    formObje: payload.formObje ?? base.formObje ?? "",
+    uretimYeri: payload.uretimYeri ?? base.uretimYeri ?? "",
+    tip: payload.tip ?? base.tip ?? "",
+
+    buluntuYeri: payload.buluntuYeri ?? base.buluntuYeri ?? "",
+    planKare: payload.planKare ?? base.planKare ?? "",
+    seviye: payload.seviye ?? base.seviye ?? "",
+    eserTarihi: payload.eserTarihi ?? base.eserTarihi ?? "",
+    sube: payload.sube ?? base.sube ?? "",
+    yapimMalzemesi: payload.yapimMalzemesi ?? base.yapimMalzemesi ?? "",
+    donem: payload.donem ?? base.donem ?? "",
+    buluntuSekli: payload.buluntuSekli ?? base.buluntuSekli ?? "",
+    tabaka: payload.tabaka ?? base.tabaka ?? "",
+    mezarNo: payload.mezarNo ?? base.mezarNo ?? "",
+    buluntuYeriDiger: payload.buluntuYeriDiger ?? base.buluntuYeriDiger ?? "",
+
+    olcuRenk: payload.olcuRenk ?? base.olcuRenk ?? {},
+
+    kalipYonu: payload.kalipYonu ?? base.kalipYonu ?? "",
+    digerRenk: payload.digerRenk ?? base.digerRenk ?? "",
+    tanimBezeme: payload.tanimBezeme ?? base.tanimBezeme ?? "",
+    kaynakReferans: payload.kaynakReferans ?? base.kaynakReferans ?? "",
+
+    notes: payload.notes ?? base.notes ?? "",
+    sourceAndReference: payload.sourceAndReference ?? base.sourceAndReference ?? "",
+
+    coin: payload.coin ?? base.coin ?? {},
+    ceramic: payload.ceramic ?? base.ceramic ?? {},
+    grave: payload.grave ?? base.grave ?? {},
+
+    gorsel: payload.gorsel ?? base.gorsel ?? [],
+    cizim: payload.cizim ?? base.cizim ?? [],
+  };
 }
 
 export function createBuluntuRecord(payload) {
-  const store = loadStore();
-  const fullNo = String(payload.fullBuluntuNo || "").trim().toUpperCase();
-  if (!fullNo) throw new Error("Buluntu numarası boş olamaz.");
-  if (existsBuluntuNo(fullNo)) throw new Error(`Bu buluntu numarası zaten mevcut: ${fullNo}`);
-
-  const rec = normalizeRecord({ ...payload, id: makeId(), fullBuluntuNo: fullNo, createdAt: new Date().toISOString() });
-  store.records.unshift(rec);
-  saveStore(store);
+  const arr = loadAll();
+  const rec = normalizeRecord(payload);
+  arr.push(rec);
+  saveAll(arr);
   return rec;
 }
 
 export function updateBuluntuRecord(id, payload) {
-  const store = loadStore();
-  const idx = (store.records || []).findIndex(r => r.id === id);
-  if (idx < 0) throw new Error("Kayıt bulunamadı.");
-
-  const existing = store.records[idx];
-  const fullNo = String(payload.fullBuluntuNo || existing.fullBuluntuNo || "").trim().toUpperCase();
-  if (!fullNo) throw new Error("Buluntu numarası boş olamaz.");
-  if (existsBuluntuNo(fullNo, id)) throw new Error(`Bu buluntu numarası zaten mevcut: ${fullNo}`);
-
-  const merged = {
-    ...existing,
-    ...payload,
-    id,
-    fullBuluntuNo: fullNo,
-    updatedAt: new Date().toISOString()
-  };
-  store.records[idx] = normalizeRecord(merged);
-  saveStore(store);
-  return store.records[idx];
+  const arr = loadAll();
+  const idx = arr.findIndex(x => x.id === id);
+  if (idx === -1) throw new Error("Kayıt bulunamadı.");
+  const rec = normalizeRecord(payload, arr[idx]);
+  arr[idx] = rec;
+  saveAll(arr);
+  return rec;
 }
 
 export function deleteBuluntuRecord(id) {
-  const store = loadStore();
-  const before = store.records.length;
-  store.records = (store.records || []).filter(r => r.id !== id);
-  if (store.records.length === before) throw new Error("Kayıt bulunamadı.");
-  saveStore(store);
-  return true;
+  const arr = loadAll();
+  saveAll(arr.filter(x => x.id !== id));
 }
 
-export function getBuluntuById(id) {
-  const store = loadStore();
-  return (store.records || []).find(r => r.id === id) || null;
-}
-
-export function listBuluntuRecords() {
-  return loadStore().records || [];
-}
-
-export function exportBuluntuAsJSON() {
-  return loadStore();
-}
-
-function normalizeRecord(payload) {
-  return {
-    id: payload.id,
-    anakod: payload.anakod || "",
-    anakodId: payload.anakodId || "",
-    fullBuluntuNo: payload.fullBuluntuNo || "",
-    buluntuNoRaw: payload.buluntuNoRaw || "",
-
-    buluntuTarihi: payload.buluntuTarihi || "",
-    kaziEnvanterNo: payload.kaziEnvanterNo || "",
-    formObje: payload.formObje || "",
-    uretimYeri: payload.uretimYeri || "",
-    tip: payload.tip || "",
-    buluntuYeri: payload.buluntuYeri || "",
-    planKare: payload.planKare || "",
-    seviye: payload.seviye || "",
-    eserTarihi: payload.eserTarihi || "",
-    sube: payload.sube || "",
-    muzeEnvanterNo: payload.muzeEnvanterNo || "",
-    yapimMalzemesi: payload.yapimMalzemesi || "",
-    donem: payload.donem || "",
-    buluntuSekli: payload.buluntuSekli || "",
-    tabaka: payload.tabaka || "",
-    mezarNo: payload.mezarNo || "",
-    buluntuYeriDiger: payload.buluntuYeriDiger || "",
-
-    olcuRenk: payload.olcuRenk || {},
-    kalipYonu: payload.kalipYonu || "",
-    digerRenk: payload.digerRenk || "",
-    tanimBezeme: payload.tanimBezeme || "",
-    kaynakReferans: payload.kaynakReferans || "",
-
-    gorsel: payload.gorsel || [],
-    cizim: payload.cizim || [],
-
-    createdAt: payload.createdAt || "",
-    updatedAt: payload.updatedAt || ""
-  };
+export function resetBuluntuForDemo() {
+  localStorage.removeItem(KEY);
 }

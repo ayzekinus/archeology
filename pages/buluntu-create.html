@@ -57,6 +57,21 @@
           </div>
 
           <div class="field">
+            <label>İşlem Tipi</label>
+            <select id="processType" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Üretim Yeri (Production Site)</label>
+            <select id="productionSite" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Buluntu Şekli</label>
+            <input id="findingShape" type="text" placeholder="örn: tam/kırık/parça" />
+          </div>
+
+          <div class="field">
             <label>Buluntu Yeri (Anakod’dan)</label>
             <input id="buluntuYeriLocked" type="text" readonly />
           </div>
@@ -87,6 +102,12 @@
           </div>
 
           <div class="field">
+            <label>Form Türü</label>
+            <select id="formType" class="select"></select>
+            <div class="muted" style="margin-top:6px;">Form türüne göre alanlar açılır/kapanır.</div>
+          </div>
+
+          <div class="field">
             <label>Yapım Malzemesi</label>
             <select id="yapimMalzemesi" class="select"></select>
           </div>
@@ -94,6 +115,22 @@
           <div class="field">
             <label>Dönem</label>
             <select id="donem" class="select"></select>
+          </div>
+
+          <div class="field">
+            <label>Aktiflik Durumu</label>
+            <select id="isActive" class="select">
+              <option value="true">Aktif</option>
+              <option value="false">Pasif</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Envanterlik / Etütlük</label>
+            <select id="isInventory" class="select">
+              <option value="false">Etütlük</option>
+              <option value="true">Envanterlik</option>
+            </select>
           </div>
 
           <div class="field">
@@ -235,7 +272,83 @@
         <textarea id="kaynakReferans" class="textarea" rows="3"></textarea>
       </section>
 
+      
+      <section class="card" id="coinSection" style="display:none;">
+        <h2>Sikke Formu Alanları</h2>
+        <div class="grid">
+          <div class="field"><label>Kondüsyon</label><input id="coinCondition" type="text" /></div>
+          <div class="field"><label>Birimi</label><input id="coinUnit" type="text" /></div>
+
+          <div class="field">
+            <label>Çap</label>
+            <div class="measure">
+              <input id="coinDiameterVal" type="text" placeholder="değer" />
+              <select id="coinDiameterUnit" class="select">
+                <option value="">-</option><option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field"><label>Kalıp Yönü</label><input id="coinMoldDirection" type="text" /></div>
+          <div class="field"><label>İmparator</label><input id="coinEmperor" type="text" /></div>
+          <div class="field"><label>Darp Yılı</label><input id="coinMintingYear" type="text" /></div>
+
+          <div class="field" style="grid-column: 1 / -1;"><label>Ön Yüz Tanımı</label><input id="coinFrontDef" type="text" /></div>
+          <div class="field" style="grid-column: 1 / -1;"><label>Arka Yüz Tanımı</label><input id="coinBackDef" type="text" /></div>
+
+          <div class="field" style="grid-column: 1 / -1;"><label>Ön Yüz Lejandı</label><input id="coinFrontLegend" type="text" /></div>
+          <div class="field" style="grid-column: 1 / -1;"><label>Arka Yüz Lejandı</label><input id="coinBackLegend" type="text" /></div>
+
+          <div class="field"><label>Darphane</label><input id="coinMint" type="text" /></div>
+          <div class="field"><label>Şube</label><input id="coinBranch" type="text" /></div>
+          <div class="field"><label>Ref.</label><input id="coinReference" type="text" /></div>
+
+          <div class="field">
+            <label>Ağırlık</label>
+            <div class="measure">
+              <input id="coinWeightVal" type="text" placeholder="değer" />
+              <select id="coinWeightUnit" class="select">
+                <option value="">-</option><option value="g">g</option><option value="kg">kg</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="ceramicSection" style="display:none;">
+        <h2>Seramik Formu Alanları</h2>
+        <div class="grid">
+          <div class="field"><label>Hamur Rengi</label><select id="cerClayColor" class="select"></select></div>
+          <div class="field"><label>Astar Rengi</label><select id="cerUndercoatColor" class="select"></select></div>
+          <div class="field"><label>Dipinto Rengi</label><select id="cerDipintoColor" class="select"></select></div>
+          <div class="field"><label>Diğer Renk</label><select id="cerOtherColor" class="select"></select></div>
+          <div class="field"><label>Yüzey Rengi</label><select id="cerSurfaceColor" class="select"></select></div>
+          <div class="field"><label>Sır Rengi</label><select id="cerGlazeColor" class="select"></select></div>
+          <div class="field"><label>Bezeme Rengi</label><select id="cerPatternColor" class="select"></select></div>
+
+          <div class="field"><label>Yüzey Kalitesi</label><select id="cerSurfaceQuality" class="select"></select></div>
+          <div class="field"><label>Fırınlama</label><select id="cerBaking" class="select"></select></div>
+          <div class="field"><label>Doku</label><select id="cerTexture" class="select"></select></div>
+          <div class="field"><label>Gözenek</label><select id="cerPore" class="select"></select></div>
+
+          <div class="field" style="grid-column: 1 / -1;"><label>Hamur Tanım</label><textarea id="cerClayDef" class="textarea" rows="2"></textarea></div>
+          <div class="field" style="grid-column: 1 / -1;"><label>Form Tanım</label><textarea id="cerFormDef" class="textarea" rows="2"></textarea></div>
+          <div class="field" style="grid-column: 1 / -1;"><label>Astar/Sır/Yüzey Tanım</label><textarea id="cerMoreDef" class="textarea" rows="2"></textarea></div>
+        </div>
+      </section>
+
+
       <section class="card">
+        <h2>Notlar / Açıklama</h2>
+        <textarea id="notes" class="textarea" rows="3"></textarea>
+      </section>
+
+      <section class="card">
+        <h2>Kaynak ve Referans (Model)</h2>
+        <textarea id="sourceAndReference" class="textarea" rows="3"></textarea>
+      </section>
+
+<section class="card">
         <h2>Buluntu Görseli</h2>
         <input id="buluntuGorsel" type="file" accept="image/*" multiple />
         <div class="muted" id="gorselHint" style="margin-top:6px;"></div>
